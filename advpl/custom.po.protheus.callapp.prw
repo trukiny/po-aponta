@@ -33,7 +33,7 @@ Static Function jsToAdvpl(oWebChannel, cType, cContent)
         case cType == 'loadOpsLibCore'
             cContent := fnLoadOps()
             oWebChannel:advplToJs('loadOpsLibCore',cContent)
-
+            
     end case
     
 Return .T.
