@@ -1,33 +1,23 @@
 #include 'totvs.ch'
 
-/*/{Protheus.doc} U_CallApp1
-    (long_description)
+/*/{Protheus.doc} U_POAPONTA
+    Exemplo de funcionamento da biblioteca po-lib-core
     @type  Function
-    @author user
-    @since 31/05/2025
-    @version version
-    @param param_name, param_type, param_descr
-    @return return_var, return_type, return_description
-    @example
-    (examples)
-    @see (links_or_references)
+    @author Klaus Wolfgram
+    @since 28/06/2025
+    @version 1.0
     /*/
 Function U_POAPONTA()
     fwCallApp("po-aponta")
 Return 
 
-/*/{Protheus.doc} nomeStaticFunction
-    (long_description)
+/*/{Protheus.doc} jsToAdvpl
+    Funcao estatica usada para receber e enviar mensagens para o app angular.
     @type  Static Function
-    @author user
-    @since 31/05/2025
-    @version version
-    @param param_name, param_type, param_descr
-    @return return_var, return_type, return_description
-    @example
-    (examples)
-    @see (links_or_references)
-/*/
+    @author Klaus Wolfgram
+    @since 28/06/2025
+    @version 1.0  
+    /*/
 Static Function jsToAdvpl(oWebChannel, cType, cContent)
 
     do case 
@@ -52,7 +42,7 @@ Return .T.
     Executa a listagem de ops em forma de string json para envio à app poui usando protheus lib core
     @type  Static Function
     @author Klaus Wolfgram
-    @since 27/06/2025
+    @since 28/06/2025
     @version 1.0
     /*/
 Static Function fnLoadOps()
