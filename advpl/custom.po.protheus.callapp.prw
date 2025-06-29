@@ -71,7 +71,7 @@ Static Function fnLoadOps()
         jOp['quantidadeApontada'      ] := SC2->C2_QUJE
         jOp['quantidadePendente'      ] := SC2->(C2_QUANT - C2_QUJE)
         jOp['dataInicio'              ] := SC2->C2_DATPRI
-        jOp['dataPrevista'            ] := SC2->C2_DATPRI      
+        jOp['dataPrevista'            ] := SC2->(if(empty(C2_DATPRI),date(),C2_DATPRI))      
         jOp['dataEncerramento'        ] := SC2->C2_DATRF
         jOp['dataPrevistaEncerramento'] := SC2->C2_DATPRF 
         jOp['apontamentos'            ] := array(0)

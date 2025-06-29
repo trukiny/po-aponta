@@ -2,6 +2,7 @@ export class Op {
     public status: string = '';
     public numero: string = '';
     public produto: string = '';
+    public unmed: string = '';
     public quantidade: number = 0;
     public quantidadeApontada: number = 0;
     public quantidadePendente: number = 0;
@@ -16,7 +17,9 @@ export class Apontamento {
 
     public op: string = '';
     public produto: string = '';
+    public unmed: string = '';
     public quantidadeApont: number = 0;
+    public quantidadePendente: number = 0;
     public dataInicio!: Date;
     public horaInicio: string = '';
     public dataTermino!: Date;

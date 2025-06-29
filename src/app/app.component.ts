@@ -68,17 +68,17 @@ export class AppComponent implements OnInit, OnDestroy{
   private listOps$ = this.pcpService.getListOps();
   private selectedOp$ = this.pcpService.getSelectedOp();
   private interval!: any;
-
   private sub = new Subscription();
-
   public selectedOp!: Op;
-  
   public readonly actions: Array<PoPageAction> = [];
+  
   public readonly breadcrumb: Array<PoBreadcrumbItem> = [
     {label: 'Home',link: '/home'},
     {label: 'Ordens de produção'},
   ];
+  
   public readonly title = 'Ordens de Produção';
+  
   public readonly columns: Array<PoTableColumn> = [
     {property: 'status', label: 'Status', type: 'subtitle', width: '15%', subtitles:[
       { value: '1', label: 'Não iniciada', color: 'color-10', content: 'N' },
@@ -92,20 +92,21 @@ export class AppComponent implements OnInit, OnDestroy{
     { property: 'quantidade', label: 'Quantidade', type: 'number', width: '20%' },    
     { property: 'dataPrevista', label: 'Previsão', type: 'date' , width: '20%' },
   ];
+
   public items: Array<Op> = [];
 
   public fieldsApontamento: Array<PoDynamicFormField> = [
-    {property: 'dataInicio'     , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Data do inicio'      , label: 'Data do Apontamento' ,readonly: true , type: 'date', format: 'dd/mm/yyyy',divider: 'Apontamento'},
-    {property: 'horaInicio'     , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Horário de Inicio'   , label: 'Horário de Inicio'   ,readonly: true , type: 'time'},
-    {property: 'dataTermino'    , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Data do Término'     , label: 'Data do Término'     ,readonly: true , type: 'date', format: 'dd/mm/yyyy'},
-    {property: 'horaTermino'    , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Horário do Término'  , label: 'Horário do Término'  ,readonly: true , type: 'time'},  
-    {property: 'tempoDecorrido' , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Tempo de Operação'   , label: 'Tempo de Operação'   ,readonly: true , type: 'time'},      
-    {property: 'quantidadeApont', gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Quantidade Produzida', label: 'Quantidade Produzida',readonly: false, type: 'number'},      
-    {property: 'op'             , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Número da OP'        , label: 'Número da OP'        ,readonly: true , divider: 'Ordem de Produção'},
-    {property: 'dataOp'         , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Data da OP'          , label: 'Data da OP'          ,readonly: true , type: 'date', format: 'dd/mm/yyyy'},
-    {property: 'produto'        , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Produto'             , label: 'Produto'             ,readonly: true },
-    {property: 'unmed'          , gridColumns: 3 , gridSmColumns: 12, order: 1, placeholder: 'Unidade de Medida'   , label: 'Unidade de Medida'   ,readonly: true },
-    {property: 'saldo'          , gridColumns: 3 , gridSmColumns: 12, order: 1, placeholder: 'Saldo a produzir'    , label: 'Saldo a Produzir'    ,readonly: true },
+    {property: 'dataInicio'         , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Data do inicio'      , label: 'Data do Apontamento' ,readonly: true , type: 'date', format: 'dd/mm/yyyy',divider: 'Apontamento'},
+    {property: 'horaInicio'         , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Horário de Inicio'   , label: 'Horário de Inicio'   ,readonly: true , type: 'time'},
+    {property: 'dataTermino'        , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Data do Término'     , label: 'Data do Término'     ,readonly: true , type: 'date', format: 'dd/mm/yyyy'},
+    {property: 'horaTermino'        , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Horário do Término'  , label: 'Horário do Término'  ,readonly: true , type: 'time'},  
+    {property: 'tempoDecorrido'     , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Tempo de Operação'   , label: 'Tempo de Operação'   ,readonly: true , type: 'time'},      
+    {property: 'quantidadeApont'    , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Quantidade Produzida', label: 'Quantidade Produzida',readonly: false, type: 'number'},      
+    {property: 'op'                 , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Número da OP'        , label: 'Número da OP'        ,readonly: true , divider: 'Ordem de Produção'},
+    {property: 'dataOp'             , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Data da OP'          , label: 'Data da OP'          ,readonly: true , type: 'date', format: 'dd/mm/yyyy'},
+    {property: 'produto'            , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Produto'             , label: 'Produto'             ,readonly: true },
+    {property: 'unmed'              , gridColumns: 3 , gridSmColumns: 12, order: 1, placeholder: 'Unidade de Medida'   , label: 'Unidade de Medida'   ,readonly: true },
+    {property: 'quantidadePendente' , gridColumns: 3 , gridSmColumns: 12, order: 1, placeholder: 'Saldo a produzir'    , label: 'Saldo a Produzir'    ,readonly: true },
   ];
 
   public op!: Op;
@@ -118,9 +119,9 @@ export class AppComponent implements OnInit, OnDestroy{
     horaTermino: '',
     quantidadeApont: 1,
     dataOp: '',
-    produto: 'PRODUTO TESTE',
+    produto: '',
     unmed: '',
-    saldo: 0
+    quantidadePendente: 0
   };
 
   public readonly tableActions: Array<PoTableAction> = [
@@ -174,6 +175,9 @@ export class AppComponent implements OnInit, OnDestroy{
     this.pcpService.setSelectedOp(op);
     this.apontamento.op = this.selectedOp.numero;
     this.apontamento.dataOp = this.selectedOp.dataPrevista;
+    this.apontamento.produto = this.selectedOp.produto;
+    this.apontamento.unmed = this.selectedOp.unmed;
+    this.apontamento.quantidadePendente = this.selectedOp.quantidadePendente;
     this.modalApontamentoEl.open();
   }
 
@@ -233,12 +237,15 @@ export class AppComponent implements OnInit, OnDestroy{
   onButtonGravarApontamento(){
     
     if(this.interval !== null){
+      
       const notification: PoNotification = {
         duration: 1000,
         message:'É necessário parar o apontamento para realizar a gravacao',
       }
+
       this.notify.warning(notification);
       return
+
     }
 
     const notification: PoNotification = {
@@ -247,17 +254,21 @@ export class AppComponent implements OnInit, OnDestroy{
     }
 
     this.notify.success(notification);
+    this.pcpService.setSelectedOp(new Op());
     this.modalApontamentoEl.close();
 
   };
 
   onButtonCancelarApontamento(){
+    
     if(this.interval !== null){
       clearInterval(this.interval);
       this.interval = null;
     }
 
+    this.pcpService.setSelectedOp(new Op());
     this.modalApontamentoEl.close();
+
   }
 
   onChangeFieldsApontamento(changedValue: PoDynamicFormFieldChanged) {
