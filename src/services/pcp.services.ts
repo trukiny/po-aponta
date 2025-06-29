@@ -34,6 +34,7 @@ export class PCPService {
 
     public setSelectedOp(op: Op){
         this.selectedOp$.next(op);
+        console.log('selectedOP',this.selectedOp$.value);
     }
 
     public getListOps(): Observable<Array<Op>> {

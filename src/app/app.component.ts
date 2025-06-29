@@ -88,7 +88,8 @@ export class AppComponent implements OnInit, OnDestroy{
       { value: '5', label: 'Cancelada', color: 'color-06', content: 'C'  }
     ]},
     { property: 'numero', label: 'OP', type: 'string', width: '20%' },
-    { property: 'produto', label: 'Produto', type: 'string', width: '40%' },
+    { property: 'produto', label: 'Produto', type: 'string', width: '40%'},
+    { property: 'unmed' , label: 'Un. Med.', type: 'string', width: '10%'},
     { property: 'quantidade', label: 'Quantidade', type: 'number', width: '20%' },    
     { property: 'dataPrevista', label: 'Previsão', type: 'date' , width: '20%' },
   ];

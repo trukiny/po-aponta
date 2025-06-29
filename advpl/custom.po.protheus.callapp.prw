@@ -67,6 +67,7 @@ Static Function fnLoadOps()
         jOp['status'                  ] := if(SC2->C2_QUJE == 0,'1','2')
         jOp['numero'                  ] := SC2->(C2_FILIAL+C2_NUM+C2_ITEM+C2_SEQUEN)
         jOp['produto'                 ] := SB1->(alltrim(B1_DESC))
+        jOp['unmed'                   ] := SB1->B1_UM
         jOp['quantidade'              ] := SC2->C2_QUANT
         jOp['quantidadeApontada'      ] := SC2->C2_QUJE
         jOp['quantidadePendente'      ] := SC2->(C2_QUANT - C2_QUJE)
