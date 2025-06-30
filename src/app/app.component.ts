@@ -81,17 +81,17 @@ export class AppComponent implements OnInit, OnDestroy{
   
   public readonly columns: Array<PoTableColumn> = [
     {property: 'status', label: 'Status', type: 'subtitle', width: '15%', subtitles:[
-      { value: '1', label: 'Não iniciada', color: 'color-10', content: 'N' },
-      { value: '2', label: 'Iniciada', color: 'color-01', content: 'I'  },
-      { value: '3', label: 'Ociosa', color: 'color-08' , content: 'O' },
-      { value: '4', label: 'Finalizada', color: 'color-07', content: 'F'  },
-      { value: '5', label: 'Cancelada', color: 'color-06', content: 'C'  }
+      { value: '1'    , label: 'Não iniciada', color: 'color-10', content: 'N' },
+      { value: '2'    , label: 'Iniciada'    , color: 'color-01', content: 'I' },
+      { value: '3'    , label: 'Ociosa'      , color: 'color-08', content: 'O' },
+      { value: '4'    , label: 'Finalizada'  , color: 'color-07', content: 'F' },
+      { value: '5'    , label: 'Cancelada'   , color: 'color-06', content: 'C' }
     ]},
-    { property: 'numero', label: 'OP', type: 'string', width: '20%' },
-    { property: 'produto', label: 'Produto', type: 'string', width: '40%'},
-    { property: 'unmed' , label: 'Un. Med.', type: 'string', width: '10%'},
-    { property: 'quantidade', label: 'Quantidade', type: 'number', width: '20%' },    
-    { property: 'dataPrevista', label: 'Previsão', type: 'date' , width: '20%' },
+    { property: 'numero'      , label: 'OP'         , type: 'string', width: '20%'  },
+    { property: 'produto'     , label: 'Produto'    , type: 'string', width: '40%'  },
+    { property: 'unmed'       , label: 'Un. Med.'   , type: 'string', width: '10%'  },
+    { property: 'quantidade'  , label: 'Quantidade' , type: 'number', width: '20%'  },
+    { property: 'dataPrevista', label: 'Previsão'   , type: 'date'  , width: '20%'  },
   ];
 
   public items: Array<Op> = [];
@@ -174,12 +174,14 @@ export class AppComponent implements OnInit, OnDestroy{
 
   onActionIniciarApontamento(op: Op) {
     this.pcpService.setSelectedOp(op);
-    this.apontamento.op = this.selectedOp.numero;
-    this.apontamento.dataOp = this.selectedOp.dataPrevista;
-    this.apontamento.produto = this.selectedOp.produto;
-    this.apontamento.unmed = this.selectedOp.unmed;
+    this.apontamento.op                 = this.selectedOp.numero;
+    this.apontamento.dataOp             = new Date(this.selectedOp.dataPrevista);
+    this.apontamento.produto            = this.selectedOp.produto;
+    this.apontamento.unmed              = this.selectedOp.unmed;
     this.apontamento.quantidadePendente = this.selectedOp.quantidadePendente;
     this.modalApontamentoEl.open();
+    console.log('Op selecionada:', this.selectedOp );
+    console.log('Apontamento:'   , this.apontamento);
   }
 
   onButtonIniciarApontamento() {
