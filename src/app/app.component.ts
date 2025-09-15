@@ -102,7 +102,8 @@ export class AppComponent implements OnInit, OnDestroy{
     {property: 'dataTermino'        , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Data do Término'     , label: 'Data do Término'     ,readonly: true , type: 'date', format: 'dd/mm/yyyy'},
     {property: 'horaTermino'        , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Horário do Término'  , label: 'Horário do Término'  ,readonly: true , type: 'time'},  
     {property: 'tempoDecorrido'     , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Tempo de Operação'   , label: 'Tempo de Operação'   ,readonly: true , type: 'time'},      
-    {property: 'quantidadeApont'    , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Quantidade Produzida', label: 'Quantidade Produzida',readonly: false, type: 'number'},      
+    {property: 'quantidadeApont'    , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Quantidade Produzida', label: 'Quantidade Produzida',readonly: false, type: 'number'},
+    {property: 'motivoParada'       , gridColumns: 12, gridSmColumns: 12, order: 1, placeholder: 'Selecione o motivo'   , label: 'Motivo da Parada'    ,readonly: false, type: 'select', options: this.motivosParada, visible: false},
     {property: 'op'                 , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Número da OP'        , label: 'Número da OP'        ,readonly: true , divider: 'Ordem de Produção'},
     {property: 'dataOp'             , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Data da OP'          , label: 'Data da OP'          ,readonly: true , type: 'date', format: 'dd/mm/yyyy'},
     {property: 'produto'            , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Produto'             , label: 'Produto'             ,readonly: true },
@@ -122,8 +123,25 @@ export class AppComponent implements OnInit, OnDestroy{
     dataOp: '',
     produto: '',
     unmed: '',
-    quantidadePendente: 0
+    quantidadePendente: 0,
+    motivoParada: ''
   };
+
+  public readonly motivosParada = [
+    { value: 'MANUTENCAO_PREVENTIVA', label: 'Mantenimiento Preventivo' },
+    { value: 'MANUTENCAO_CORRETIVA', label: 'Mantenimiento Correctivo' },
+    { value: 'FALTA_MATERIA_PRIMA', label: 'Falta de Materia Prima' },
+    { value: 'FALTA_OPERADOR', label: 'Falta de Operador' },
+    { value: 'PROBLEMA_QUALIDADE', label: 'Problema de Calidad' },
+    { value: 'TROCA_FERRAMENTA', label: 'Cambio de Herramienta' },
+    { value: 'LIMPEZA_EQUIPAMENTO', label: 'Limpieza de Equipo' },
+    { value: 'FALTA_ENERGIA', label: 'Falta de Energía' },
+    { value: 'PROBLEMA_EQUIPAMENTO', label: 'Problema en Equipo' },
+    { value: 'SETUP_MAQUINA', label: 'Setup de Máquina' },
+    { value: 'REUNIAO_EQUIPE', label: 'Reunión de Equipo' },
+    { value: 'ALMOCO_LANCHE', label: 'Almuerzo/Refrigerio' },
+    { value: 'OUTROS', label: 'Otros' }
+  ];
 
   public readonly tableActions: Array<PoTableAction> = [
     {action: this.onActionIniciarApontamento.bind(this), label: 'Ver detalhes', icon: 'an an-info'},
@@ -179,6 +197,16 @@ export class AppComponent implements OnInit, OnDestroy{
     this.apontamento.produto            = this.selectedOp.produto;
     this.apontamento.unmed              = this.selectedOp.unmed;
     this.apontamento.quantidadePendente = this.selectedOp.quantidadePendente;
+    this.apontamento.motivoParada       = '';
+    
+    // Resetear la visibilidad del campo motivo de parada
+    this.fieldsApontamento = this.fieldsApontamento.map(field => {
+      if (field.property === 'motivoParada') {
+        return { ...field, visible: false, required: false };
+      }
+      return field;
+    });
+    
     this.modalApontamentoEl.open();
     console.log('Op selecionada:', this.selectedOp );
     console.log('Apontamento:'   , this.apontamento);
@@ -213,7 +241,7 @@ export class AppComponent implements OnInit, OnDestroy{
 
   onButtonEncerrarApontamento() {
 
-    if(this.interval === null){
+    if(this.interval === null || this.interval === undefined){
 
       const notification: PoNotification = {
         duration: 1000,
@@ -225,12 +253,42 @@ export class AppComponent implements OnInit, OnDestroy{
 
     }
 
+    // Mostrar el campo de motivo de parada y hacer que sea requerido
+    this.fieldsApontamento = this.fieldsApontamento.map(field => {
+      if (field.property === 'motivoParada') {
+        return { ...field, visible: true, required: true };
+      }
+      return field;
+    });
+
+    // Verificar si ya se seleccionó un motivo
+    if (!this.formApontamentoEl.value.motivoParada) {
+      const notification: PoNotification = {
+        duration: 3000,
+        message: 'Por favor, selecione um motivo para a parada antes de continuar.'
+      }
+
+      this.notify.warning(notification);
+      return;
+    }
+
+    // Si hay motivo seleccionado, proceder con la parada
     clearInterval(this.interval);
     this.interval = null;
 
+    // Ocultar nuevamente el campo de motivo
+    this.fieldsApontamento = this.fieldsApontamento.map(field => {
+      if (field.property === 'motivoParada') {
+        return { ...field, visible: false, required: false };
+      }
+      return field;
+    });
+
+    const motivoSelecionado = this.motivosParada.find(m => m.value === this.formApontamentoEl.value.motivoParada);
+    
     const notification: PoNotification = {
-      duration: 1000,
-      message: 'Apontamento paralizado!'
+      duration: 2000,
+      message: `Apontamento paralizado! Motivo: ${motivoSelecionado?.label || 'Não informado'}`
     }
 
     this.notify.information(notification);
@@ -269,6 +327,13 @@ export class AppComponent implements OnInit, OnDestroy{
       this.interval = null;
     }
 
+    // Resetear la visibilidad del campo motivo de parada
+    this.fieldsApontamento = this.fieldsApontamento.map(field => {
+      if (field.property === 'motivoParada') {
+        return { ...field, visible: false, required: false };
+      }
+      return field;
+    });
     this.pcpService.setSelectedOp(new Op());
     this.modalApontamentoEl.close();
 
