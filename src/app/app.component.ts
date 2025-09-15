@@ -280,7 +280,7 @@ export class AppComponent implements OnInit, OnDestroy{
     this.interval = null;
 
     // Guardar el motivo seleccionado en el campo de detalle
-    const motivoSelecionado = this.motivosParada.find(m => m.value === this.formApontamentoEl.value.motivoParada);
+    motivoSelecionado = this.motivosParada.find(m => m.value === this.formApontamentoEl.value.motivoParada);
     this.formApontamentoEl.value.motivoParadaDetalle = motivoSelecionado?.label || '';
 
     // Ocultar nuevamente el campo de motivo
