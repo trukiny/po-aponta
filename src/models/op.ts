@@ -27,5 +27,6 @@ export class Apontamento {
     public tempoDecorrido: string = '';
     public observacao: string = '';
     public encerraOp: boolean = false;
+    public motivoParada: string = '';
 
 }

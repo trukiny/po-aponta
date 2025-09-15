@@ -125,6 +125,7 @@ export class AppComponent implements OnInit, OnDestroy{
     {property: 'produto'            , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Produto'             , label: 'Produto'             ,readonly: true },
     {property: 'unmed'              , gridColumns: 3 , gridSmColumns: 12, order: 1, placeholder: 'Unidade de Medida'   , label: 'Unidade de Medida'   ,readonly: true },
     {property: 'quantidadePendente' , gridColumns: 3 , gridSmColumns: 12, order: 1, placeholder: 'Saldo a produzir'    , label: 'Saldo a Produzir'    ,readonly: true },
+    {property: 'motivoParadaDetalle', gridColumns: 12, gridSmColumns: 12, order: 1, placeholder: 'Motivo da parada'     , label: 'Motivo da Parada'    ,readonly: true , divider: 'Histórico de Paradas'},
   ];
 
   public op!: Op;
@@ -140,7 +141,8 @@ export class AppComponent implements OnInit, OnDestroy{
     produto: '',
     unmed: '',
     quantidadePendente: 0,
-    motivoParada: ''
+    motivoParada: '',
+    motivoParadaDetalle: ''
   };
 
   public readonly tableActions: Array<PoTableAction> = [
@@ -198,6 +200,7 @@ export class AppComponent implements OnInit, OnDestroy{
     this.apontamento.unmed              = this.selectedOp.unmed;
     this.apontamento.quantidadePendente = this.selectedOp.quantidadePendente;
     this.apontamento.motivoParada       = '';
+    this.apontamento.motivoParadaDetalle = '';
     
     // Resetear la visibilidad del campo motivo de parada
     this.fieldsApontamento = this.fieldsApontamento.map(field => {
@@ -276,6 +279,10 @@ export class AppComponent implements OnInit, OnDestroy{
     clearInterval(this.interval);
     this.interval = null;
 
+    // Guardar el motivo seleccionado en el campo de detalle
+    const motivoSelecionado = this.motivosParada.find(m => m.value === this.formApontamentoEl.value.motivoParada);
+    this.formApontamentoEl.value.motivoParadaDetalle = motivoSelecionado?.label || '';
+
     // Ocultar nuevamente el campo de motivo
     this.fieldsApontamento = this.fieldsApontamento.map(field => {
       if (field.property === 'motivoParada') {
@@ -284,11 +291,9 @@ export class AppComponent implements OnInit, OnDestroy{
       return field;
     });
 
-    const motivoSelecionado = this.motivosParada.find(m => m.value === this.formApontamentoEl.value.motivoParada);
-    
     const notification: PoNotification = {
       duration: 2000,
-      message: `Apontamento paralizado! Motivo: ${motivoSelecionado?.label || 'Não informado'}`
+      message: `Apontamento paralizado! Motivo: ${this.formApontamentoEl.value.motivoParadaDetalle || 'Não informado'}`
     }
 
     this.notify.information(notification);
