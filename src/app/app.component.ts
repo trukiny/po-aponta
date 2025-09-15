@@ -96,6 +96,22 @@ export class AppComponent implements OnInit, OnDestroy{
 
   public items: Array<Op> = [];
 
+  public readonly motivosParada = [
+    { value: 'MANUTENCAO_PREVENTIVA', label: 'Mantenimiento Preventivo' },
+    { value: 'MANUTENCAO_CORRETIVA', label: 'Mantenimiento Correctivo' },
+    { value: 'FALTA_MATERIA_PRIMA', label: 'Falta de Materia Prima' },
+    { value: 'FALTA_OPERADOR', label: 'Falta de Operador' },
+    { value: 'PROBLEMA_QUALIDADE', label: 'Problema de Calidad' },
+    { value: 'TROCA_FERRAMENTA', label: 'Cambio de Herramienta' },
+    { value: 'LIMPEZA_EQUIPAMENTO', label: 'Limpieza de Equipo' },
+    { value: 'FALTA_ENERGIA', label: 'Falta de Energía' },
+    { value: 'PROBLEMA_EQUIPAMENTO', label: 'Problema en Equipo' },
+    { value: 'SETUP_MAQUINA', label: 'Setup de Máquina' },
+    { value: 'REUNIAO_EQUIPE', label: 'Reunión de Equipo' },
+    { value: 'ALMOCO_LANCHE', label: 'Almuerzo/Refrigerio' },
+    { value: 'OUTROS', label: 'Otros' }
+  ];
+
   public fieldsApontamento: Array<PoDynamicFormField> = [
     {property: 'dataInicio'         , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Data do inicio'      , label: 'Data do Apontamento' ,readonly: true , type: 'date', format: 'dd/mm/yyyy',divider: 'Apontamento'},
     {property: 'horaInicio'         , gridColumns: 6 , gridSmColumns: 12, order: 1, placeholder: 'Horário de Inicio'   , label: 'Horário de Inicio'   ,readonly: true , type: 'time'},
@@ -126,22 +142,6 @@ export class AppComponent implements OnInit, OnDestroy{
     quantidadePendente: 0,
     motivoParada: ''
   };
-
-  public readonly motivosParada = [
-    { value: 'MANUTENCAO_PREVENTIVA', label: 'Mantenimiento Preventivo' },
-    { value: 'MANUTENCAO_CORRETIVA', label: 'Mantenimiento Correctivo' },
-    { value: 'FALTA_MATERIA_PRIMA', label: 'Falta de Materia Prima' },
-    { value: 'FALTA_OPERADOR', label: 'Falta de Operador' },
-    { value: 'PROBLEMA_QUALIDADE', label: 'Problema de Calidad' },
-    { value: 'TROCA_FERRAMENTA', label: 'Cambio de Herramienta' },
-    { value: 'LIMPEZA_EQUIPAMENTO', label: 'Limpieza de Equipo' },
-    { value: 'FALTA_ENERGIA', label: 'Falta de Energía' },
-    { value: 'PROBLEMA_EQUIPAMENTO', label: 'Problema en Equipo' },
-    { value: 'SETUP_MAQUINA', label: 'Setup de Máquina' },
-    { value: 'REUNIAO_EQUIPE', label: 'Reunión de Equipo' },
-    { value: 'ALMOCO_LANCHE', label: 'Almuerzo/Refrigerio' },
-    { value: 'OUTROS', label: 'Otros' }
-  ];
 
   public readonly tableActions: Array<PoTableAction> = [
     {action: this.onActionIniciarApontamento.bind(this), label: 'Ver detalhes', icon: 'an an-info'},
